@@ -1,31 +1,37 @@
-var {insert} = require('../data-access/student')
-var getAllStudentService=function(){
-    let listOFStudent = [{id:1,name:"ram",age:30},{id:2,name:"shyam",age:20},{id:3,name:"Suraj", age:16}];
-    // filter if age is greater than 25 
-    let ageGreaterThan25=[];
-    for (let i= 0; i<listOFStudent.length; i++){
-        if (listOFStudent[i].age>25){
-            ageGreaterThan25.push(listOFStudent[i]);
-        }
-    }
-    return ageGreaterThan25;
+var {insert, remove, update, show, showOne} = require('../data-access/student');
+var getAllStudentService=async function(){
+    var studentDetails=await show();
+    return studentDetails;
 }
     
 
-var getOneStudentService=function(idUrl){
-    let listOFStudent = [{id:1,name:"ram",age:30},{id:2,name:"shyam",age:20},{id:3,name:"Suraj", age:16}];
-
-    // Grab the id from URL 
-    for (let i=0; i<listOFStudent.length; i++){
-        if (idUrl==listOFStudent[i].id){
-            return listOFStudent[i];
-        }
+var getOneStudentService=async function(idUrl){
+    var oneStudentDetail=await showOne(idUrl)
+    if(oneStudentDetail==null){
+        return `student with ${idUrl} doesn't exist.`;
     }
-    return(`No ${idUrl} found in the list`);
+    return oneStudentDetail;
 }
 var postStudentService=async function(studentDetails){
     var createdStudent= await insert(studentDetails);
     return createdStudent;
 }
+var deleteStudentService=async function(idUrl){
+    let existingStudent = await showOne(idUrl); 
+    if(existingStudent == null){
+        return `student with ${idUrl} doesn't exist.`;
+    }
+    var deletedStudent= await remove(idUrl);
+    return deletedStudent;
+}
+var updateStudentService=async function(idUrl, updatedStudentDetail){
+    let existingStudent = await showOne(idUrl); 
+    if(existingStudent == null){
+        return `student with ${idUrl} doesn't exist.`;
+    }
+    var updatedStudent=await update(idUrl, updatedStudentDetail);
+    return updatedStudent
+}
 
-module.exports = {getAllStudentService,getOneStudentService,postStudentService};
+
+module.exports = {getAllStudentService,getOneStudentService,postStudentService,deleteStudentService, updateStudentService};
