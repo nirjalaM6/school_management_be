@@ -18,9 +18,20 @@ async function update(studentId, updatedStudentDetail){
 async function show(){
     let getAllStudentDetail=await StudentModelDb.find({});
     return getAllStudentDetail;
+} 
+async function showSearch(studentNameUrl){
+    console.log("studentNameUrl");
+    console.log(studentNameUrl);
+    let getAllStudentDetailSearch= await StudentModelDb.find({name:studentNameUrl});
+    console.log(getAllStudentDetailSearch);
+    return getAllStudentDetailSearch;
 }
 async function showOne(studentIdUrl){
     let getOneStudentDetail =await StudentModelDb.findOne({id:studentIdUrl});
+    console.log(getOneStudentDetail)
     return getOneStudentDetail; 
 }
-module.exports={insert, remove, update, show, showOne};
+
+
+
+module.exports={insert, remove, update, show, showOne,showSearch};

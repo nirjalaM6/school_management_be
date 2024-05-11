@@ -1,5 +1,5 @@
 
-var {getAllStudentService,getOneStudentService,postStudentService, deleteStudentService, updateStudentService} = require("../service/student")
+var {getAllStudentService,getOneStudentService,postStudentService, deleteStudentService, updateStudentService,searchStudentService} = require("../service/student")
 
 let getAllStudentController = async function(req,res,next){
    let studentDetails =  await getAllStudentService();
@@ -27,5 +27,10 @@ let updateStudentController=async function(req,res,next){
     let updatedStudent=await updateStudentService(idFromUrl, updatedStudentDetail);
     res.send(updatedStudent);
 }
-
-module.exports = {getAllStudentController,getOneStudentController,postStudentController, deleteStudentController, updateStudentController};
+let showStudentController=async function(req,res,next){
+    let nameFromUrl=req.query.name;
+    //console.log(nameFromUrl);
+    let showStudent=await searchStudentService(nameFromUrl);
+    res.send(showStudent);
+}
+module.exports = {getAllStudentController,getOneStudentController,postStudentController, deleteStudentController, updateStudentController,showStudentController};
